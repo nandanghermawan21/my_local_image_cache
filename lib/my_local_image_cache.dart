@@ -14,7 +14,7 @@ class Calculator {
 
 class LocalImageCache extends StatelessWidget {
   final String imageUrl;
-  final String folderName = "local_image_cache";
+  final String folderName;
   final String name;
   final double height;
   final double width;
@@ -29,6 +29,7 @@ class LocalImageCache extends StatelessWidget {
     this.imageUrl =
         "https://enerren.com/wp-content/uploads/2016/04/logo-enerren.png",
     this.decoration,
+    this.folderName = "local_image_cache",
     this.errorWidget,
   });
 
