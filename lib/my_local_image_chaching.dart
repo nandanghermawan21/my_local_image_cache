@@ -14,6 +14,7 @@ class Calculator {
 
 class LocalImageCache extends StatelessWidget {
   final String imageUrl;
+  final String folderName = "local_image_cache";
   final String name;
   final double height;
   final double width;
@@ -36,7 +37,7 @@ class LocalImageCache extends StatelessWidget {
       width: width,
       decoration: decoration,
       child: FutureBuilder(
-        future: saveAndLoadImage(imageUrl, name),
+        future: saveAndLoadImage(imageUrl, folderName, name),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Image.file(
@@ -60,12 +61,44 @@ class LocalImageCache extends StatelessWidget {
   //jika sudah ada maka tampilkan gambar tersebut
   //jika belum ada maka download gambar tersebut dan simpan ke dalam file
   //lalu tampilkan gambar tersebut
-  Future<File> saveAndLoadImage(String imageUrl, String name) async {
-    final response = await http.get(Uri.parse(imageUrl));
-    final bytes = response.bodyBytes;
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$name');
-    await file.writeAsBytes(bytes);
-    return file;
+  Future<File> saveAndLoadImage(
+      String imageUrl, String folderName, String name) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final folder = Directory('$path/$folderName');
+    if (!folder.existsSync()) {
+      folder.createSync();
+    }
+    final file = File('${folder.path}/$name');
+    if (file.existsSync()) {
+      return file;
+    } else {
+      final response = await http.get(Uri.parse(imageUrl));
+      await file.writeAsBytes(response.bodyBytes);
+      return file;
+    }
+  }
+
+  //buat function untuk menghapus gambar dari
+  static Future<void> deleteImage(String folderName, String name) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final folder = Directory('$path/$folderName');
+    if (folder.existsSync()) {
+      final file = File('${folder.path}/$name');
+      if (file.existsSync()) {
+        file.deleteSync();
+      }
+    }
+  }
+
+  //buat function untuk menghapus semua gambar dari folder
+  static Future<void> deleteAllImage(String folderName) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final folder = Directory('$path/$folderName');
+    if (folder.existsSync()) {
+      folder.deleteSync(recursive: true);
+    }
   }
 }
