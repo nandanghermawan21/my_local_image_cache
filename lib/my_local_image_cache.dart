@@ -61,7 +61,7 @@ class LocalImageCache extends StatelessWidget {
   //jika sudah ada maka tampilkan gambar tersebut
   //jika belum ada maka download gambar tersebut dan simpan ke dalam file
   //lalu tampilkan gambar tersebut
-  Future<File> saveAndLoadImage(
+  static Future<File> saveAndLoadImage(
       String imageUrl, String folderName, String name) async {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
