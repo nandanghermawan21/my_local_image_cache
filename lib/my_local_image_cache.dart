@@ -19,6 +19,7 @@ class LocalImageCache extends StatelessWidget {
   final double height;
   final double width;
   final BoxDecoration? decoration;
+  final Widget? errorWidget;
 
   const LocalImageCache({
     super.key,
@@ -28,6 +29,7 @@ class LocalImageCache extends StatelessWidget {
     this.imageUrl =
         "https://enerren.com/wp-content/uploads/2016/04/logo-enerren.png",
     this.decoration,
+    this.errorWidget,
   });
 
   @override
@@ -40,14 +42,15 @@ class LocalImageCache extends StatelessWidget {
         future: saveAndLoadImage(imageUrl, folderName, name),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Image.file(
-              snapshot.data!,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.error,
-                color: Colors.grey,
-              ),
-            );
+            return errorWidget ??
+                Image.file(
+                  snapshot.data!,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => const Icon(
+                    Icons.error,
+                    color: Colors.grey,
+                  ),
+                );
           }
           return const Center(
             child: CircularProgressIndicator(),
