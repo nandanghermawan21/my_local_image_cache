@@ -1,4 +1,4 @@
-library my_local_image_chaching;
+library my_local_image_cache;
 
 import 'dart:io';
 

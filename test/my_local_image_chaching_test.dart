@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:my_local_image_chaching/my_local_image_chaching.dart';
+import 'package:my_local_image_cache/my_local_image_cache.dart';
 
 void main() {
   test('adds one to input values', () {
