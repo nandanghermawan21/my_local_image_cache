@@ -70,13 +70,13 @@ class LocalImageCache extends StatelessWidget {
       folder.createSync();
     }
     final file = File('${folder.path}/$name');
-    if (file.existsSync()) {
+
+    return http.get(Uri.parse(imageUrl)).then((response) {
+      file.writeAsBytesSync(response.bodyBytes);
       return file;
-    } else {
-      final response = await http.get(Uri.parse(imageUrl));
-      await file.writeAsBytes(response.bodyBytes);
+    }).catchError((onError) {
       return file;
-    }
+    });
   }
 
   //buat function untuk menghapus gambar dari
