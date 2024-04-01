@@ -43,15 +43,16 @@ class LocalImageCache extends StatelessWidget {
         future: saveAndLoadImage(imageUrl, folderName, name),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return errorWidget ??
-                Image.file(
-                  snapshot.data!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
+            return Image.file(
+              snapshot.data!,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) =>
+                  errorWidget ??
+                  const Icon(
                     Icons.error,
                     color: Colors.grey,
                   ),
-                );
+            );
           }
           return const Center(
             child: CircularProgressIndicator(),
