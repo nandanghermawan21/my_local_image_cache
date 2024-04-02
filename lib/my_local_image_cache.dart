@@ -39,7 +39,7 @@ class LocalImageCache extends StatelessWidget {
       height: height,
       width: width,
       decoration: decoration,
-      child: FutureBuilder(
+      child: FutureBuilder<File>(
         future: saveAndLoadImage(imageUrl, folderName, name),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
